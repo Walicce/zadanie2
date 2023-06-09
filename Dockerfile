@@ -13,8 +13,8 @@ EXPOSE 80
 RUN apt-get update && apt-get install -y curl
 RUN apt-get upgrade -y curl
 # Fix incorrect permission assignment
-RUN apt-get install -y shadow
-RUN usermod -g shadow nginx
+# Fix incorrect permission assignment
+RUN chown -R nginx:nginx /var/cache/nginx /var/run /var/log/nginx
 
 
 COPY --from=build-stage /app/build /usr/share/nginx/html
