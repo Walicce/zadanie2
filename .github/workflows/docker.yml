@@ -31,3 +31,7 @@ jobs:
       - name: Build and push Docker image (arm64)
         run: |
           docker buildx build --platform linux/arm64 --push -t nadzeyas/projekt2:arm64-latest .
+        env:
+          DOCKER_BUILDKIT: 1
+          DOCKER_CLI_EXPERIMENTAL: enabled
+          DOCKER_BUILDKIT_INLINE_CACHE: 1
