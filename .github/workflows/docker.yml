@@ -38,5 +38,7 @@ jobs:
           
       - name: Run Snyk tests
         uses: snyk/actions/docker@master
+        with:
+          image: nadzeyas/projekt2:latest
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
