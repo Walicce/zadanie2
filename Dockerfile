@@ -9,6 +9,10 @@ RUN npm run build
 # Stage 2: Serve the app with Nginx
 FROM nginx as production-stage
 EXPOSE 80
+# Update curl to the latest version
+RUN apt-get update && apt-get install -y curl
+RUN apt-get upgrade -y curl
+
 COPY --from=build-stage /app/build /usr/share/nginx/html
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 CMD wget --quiet --tries=1 --spider http://localhost:80 || exit 1
 CMD ["nginx", "-g", "daemon off;"]
