@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2.4.3
+        uses: actions/checkout@v2
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -30,4 +30,4 @@ jobs:
       
       - name: Build and push Docker image (arm64)
         run: |
-          docker buildx build --platform linux/arm64 --push -t nadzeyas/projekt2:latest .
+          docker buildx build --platform linux/arm64 --push -t nadzeyas/projekt2:arm64-latest .
