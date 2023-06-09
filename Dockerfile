@@ -1,18 +1,14 @@
-# Stage 1: Budowanie aplikacji React
+# Stage 1: Build the React app
 FROM node:alpine as build-stage
-WORKDIR /app
+WORKDIR '/app'
 COPY package.json .
 RUN npm install
 COPY . .
 RUN npm run build
 
-# Stage 2: Tworzenie obrazu produkcyjnego
-FROM nginx:alpine as production-stage
+# Stage 2: Serve the app with Nginx
+FROM nginx as production-stage
+EXPOSE 80
 COPY --from=build-stage /app/build /usr/share/nginx/html
-
-# Stage 3: Tworzenie obrazu dla architektury arm64
-FROM --platform=linux/arm64 nginx:alpine as arm64-stage
-COPY --from=build-stage /app/build /usr/share/nginx/html
-
-# HEALTHCHECK
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -q --spider http://localhost || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 CMD wget --quiet --tries=1 --spider http://localhost:80 || exit 1
+CMD ["nginx", "-g", "daemon off;"]
