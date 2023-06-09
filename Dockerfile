@@ -7,17 +7,14 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Serve the app with a lightweight HTTP server
-FROM node:alpine as production-stage
+FROM node:alpine:3.14 as production-stage
 EXPOSE 80
-
 
 WORKDIR '/app'
 COPY --from=build-stage /app/build .
 
 RUN npm install -g http-server
 
-
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 CMD wget --quiet --tries=1 --spider http://localhost:80 || exit 1
-
 
 CMD ["http-server", "-p", "80"]
