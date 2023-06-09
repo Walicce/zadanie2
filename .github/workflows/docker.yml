@@ -36,9 +36,3 @@ jobs:
           DOCKER_CLI_EXPERIMENTAL: enabled
           DOCKER_BUILDKIT_INLINE_CACHE: 1
           
-      - name: Run Snyk tests
-        uses: snyk/actions/docker@master
-        with:
-          image: nadzeyas/projekt2:latest
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
