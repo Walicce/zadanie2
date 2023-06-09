@@ -26,8 +26,8 @@ jobs:
 
       - name: Build and push Docker image (x86_64)
         run: |
-          docker buildx build --platform linux/amd64 --push -t your-username/your-image:latest .
+          docker buildx build --platform linux/amd64 --push -t nadzeyas/projekt2:latest .
       
       - name: Build and push Docker image (arm64)
         run: |
-          docker buildx build --platform linux/arm64 --push -t your-username/your-image:latest .
+          docker buildx build --platform linux/arm64 --push -t nadzeyas/projekt2:latest .
