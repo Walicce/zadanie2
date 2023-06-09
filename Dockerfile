@@ -11,10 +11,6 @@ FROM node:alpine as production-stage
 EXPOSE 80
 
 
-
-# Fix incorrect permission assignment
-RUN chown -R node:node /app
-
 WORKDIR '/app'
 COPY --from=build-stage /app/build .
 
