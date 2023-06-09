@@ -22,7 +22,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ secrets.GHUB_USERNAME }}
-          password: ${{ secrets.GHUB_TOKEN }}
+          password: ${{ secrets.GHUB_TOKEN}}
 
       - name: Build and push Docker image (x86_64)
         run: |
