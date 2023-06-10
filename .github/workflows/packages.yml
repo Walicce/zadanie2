@@ -33,8 +33,9 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.GHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/user/packages/packages?q=name:zadanie2")
-          package_id=$(echo "$response" | jq -r '.[0].id')
+          package_id=$(echo "$response" | grep -oP '(?<="id": ")[^"]+')
           echo "::set-output name=package_id::$package_id"
+
 
       - name: Add package to repository
         run: |
