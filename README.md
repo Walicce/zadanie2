@@ -1,70 +1,67 @@
-# Getting Started with Create React App
+<b>Zadanie 2 - Github Actions i Docker</b>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+W ramach tego zadania będziemy modyfikować aplikację React z laboratorium 12 oraz opracujemy łańcuch działań w ramach Github Actions, który pozwoli na zbudowanie obrazów Docker zgodnych z OCI dla dwóch architektur sprzętowych: x86_64 oraz arm64.
 
-## Available Scripts
+Zadania do wykonania
 
-In the project directory, you can run:
+<b>a. Modyfikacja kodu źródłowego aplikacji React </b>
+Należy zmodyfikować kod źródłowy aplikacji React tak, aby wyświetlał imię oraz nazwisko studenta. Tekst pod symbolem „atomu” powinien być odpowiednio zmieniony.
 
-### `npm start`
+<img width="898" alt="Zrzut ekranu 2023-06-9 o 11 57 54" src="https://github.com/Walicce/zadanie2/assets/60614660/658ecd0c-a829-420a-9b76-f55092be5429">
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<b>b. Opracowanie łańcucha działań w ramach Github Actions </b>
+Należy opracować łańcuch działań w ramach Github Actions, który pozwoli na zbudowanie obrazów Docker zgodnych z OCI dla dwóch architektur sprzętowych: x86_64 oraz arm64. Procesor M1/M2.
+<img width="1440" alt="Zrzut ekranu 2023-06-10 o 21 00 37" src="https://github.com/Walicce/zadanie2/assets/60614660/f33a982a-2fdf-488f-9af5-d2e7b18464cb">
+Docker.yml definiuje łańcuch działań w ramach Github Actions, który ma na celu zbudowanie i przesłanie obrazów Docker o dwóch różnych architekturach (x86_64 i arm64). Poniżej znajduje się krótkie omówienie poszczególnych kroków w tym łańcuchu działań:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Checkout repository:
+Ten krok korzysta z akcji actions/checkout@v3 i służy do sklonowania repozytorium, aby uzyskać dostęp do kodu źródłowego.
+Set up QEMU:
+Ten krok korzysta z akcji docker/setup-qemu-action@v2 i służy do konfiguracji QEMU w środowisku, aby umożliwić budowanie obrazów dla architektury arm64 na maszynie x86_64.
+Set up Docker Buildx:
+Ten krok korzysta z akcji docker/setup-buildx-action@v2 i służy do konfiguracji narzędzia Docker Buildx, które umożliwia wieloplatformowe budowanie obrazów Docker.
+Login to Docker Hub:
+Ten krok korzysta z akcji docker/login-action@v2 i służy do zalogowania się do Docker Hub, aby umożliwić przesłanie zbudowanych obrazów.
+Build and push Docker image (x86_64):
+Ten krok buduje obraz Docker dla architektury x86_64 i przesyła go do Docker Hub. Parametr --platform linux/amd64 określa, że obraz jest budowany dla tej architektury.
+Build and push Docker image (arm64):
+Ten krok buduje obraz Docker dla architektury arm64 i przesyła go do Docker Hub. Parametr --platform linux/arm64 określa, że obraz jest budowany dla tej architektury. Dodatkowo, w sekcji env są ustawione zmienne środowiskowe DOCKER_BUILDKIT, DOCKER_CLI_EXPERIMENTAL oraz DOCKER_BUILDKIT_INLINE_CACHE, które mają wpływ na sposób budowania obrazu.
+Ten łańcuch działań umożliwia automatyczne budowanie i przesyłanie obrazów Docker do Docker Hub dla dwóch różnych architektur.
+<img width="915" alt="Zrzut ekranu 2023-06-9 o 14 28 27" src="https://github.com/Walicce/zadanie2/assets/60614660/a7ba5dd6-8255-4394-a049-874b9ae0f719">
 
-### `npm test`
+<b>c. Testowanie obrazu pod kątem CVE</b>
+Obraz Docker, który został zbudowany, powinien zostać poddany testowi pod kątem CVE z wykorzystaniem dowolnego z trzech narzędzi przedstawionych w instrukcji do laboratorium nr 12. Obraz nie może mieć żadnych zagrożeń krytycznych.
+Do testów pod kątem CVE zostało użyte narzędzie Snyk https://app.snyk.io
+<br>
+<img width="867" alt="Zrzut ekranu 2023-06-9 o 14 20 45" src="https://github.com/Walicce/zadanie2/assets/60614660/632a632e-e85b-44b3-a88a-b9554ecb5cac">
+<br>
+<img width="564" alt="Zrzut ekranu 2023-06-9 o 14 21 13" src="https://github.com/Walicce/zadanie2/assets/60614660/e7c034f1-dd68-4bc5-8338-d8361d8cfde3">
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<b>d. Używanie cache w trybie inline</b>
+W trakcie budowania obrazów Docker należy korzystać z cache w trybie inline, aby przyspieszyć proces budowania.
 
-### `npm run build`
+<img width="596" alt="Zrzut ekranu 2023-06-9 o 14 31 01" src="https://github.com/Walicce/zadanie2/assets/60614660/a10d4073-71bb-431d-a2fc-38b6ca6aec6c">
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<b>e. Przesłanie obrazu do repozytorium Github Packages</b>
+Po zbudowaniu obrazu, w ramach działań w Github Actions, obraz powinien zostać przesłany do repozytorium na Github Packages (repo: ghcr.io).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<img width="1415" alt="Zrzut ekranu 2023-06-10 o 21 07 06" src="https://github.com/Walicce/zadanie2/assets/60614660/d20970f6-4a5f-45e5-b3f7-bc6ec7b3262f">
+<img width="1440" alt="Zrzut ekranu 2023-06-10 o 21 01 05" src="https://github.com/Walicce/zadanie2/assets/60614660/c7deda67-0335-42ed-bd65-bb66cfb90e47">
+Checkout repository:
+Ten krok korzysta z akcji actions/checkout@v3 i służy do sklonowania repozytorium, aby uzyskać dostęp do kodu źródłowego.
+Set up QEMU:
+Ten krok korzysta z akcji docker/setup-qemu-action@v2 i służy do konfiguracji QEMU w środowisku, aby umożliwić budowanie obrazów dla architektury arm64 na maszynie x86_64.
+Set up Docker Buildx:
+Ten krok korzysta z akcji docker/setup-buildx-action@v2 i służy do konfiguracji narzędzia Docker Buildx, które umożliwia wieloplatformowe budowanie obrazów Docker.
+Log in to GitHub Packages:
+Ten krok loguje się do GitHub Packages za pomocą tokena przechowywanego jako tajna wartość (secrets.GHUB_TOKEN). Używamy tego logowania, aby móc przesłać obraz Docker do repozytorium GitHub Packages.
+Build and push Docker image:
+Ten krok buduje obraz Docker dla architektur linux/amd64 i linux/arm64, a następnie przesyła go do repozytorium GitHub Packages (ghcr.io/walicce/walicce/zadanie2). Wykorzystywany jest identyfikator wersji (github.sha), aby utworzyć unikalne oznaczenie obrazu.
+Create package:
+Ten krok tworzy pakiet w GitHub Packages, wykorzystując API GitHub. Uzyskany identyfikator pakietu jest przekazywany jako wynik (package_id) do kolejnego kroku.
+Add package to repository:
+Ten krok dodaje stworzony pakiet do repozytorium GitHub Packages. Wykorzystywane są token uwierzytelniający (secrets.GHUB_TOKEN) i identyfikator pakietu (package_id). Pakiet jest przypisywany do repozytorium o nazwie "zadanie2".
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
