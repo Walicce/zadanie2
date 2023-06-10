@@ -12,20 +12,33 @@ Należy zmodyfikować kod źródłowy aplikacji React tak, aby wyświetlał imi�
 <b>b. Opracowanie łańcucha działań w ramach Github Actions </b>
 Należy opracować łańcuch działań w ramach Github Actions, który pozwoli na zbudowanie obrazów Docker zgodnych z OCI dla dwóch architektur sprzętowych: x86_64 oraz arm64. Procesor M1/M2.
 <img width="1440" alt="Zrzut ekranu 2023-06-10 o 21 00 37" src="https://github.com/Walicce/zadanie2/assets/60614660/f33a982a-2fdf-488f-9af5-d2e7b18464cb">
+<br>
 Docker.yml definiuje łańcuch działań w ramach Github Actions, który ma na celu zbudowanie i przesłanie obrazów Docker o dwóch różnych architekturach (x86_64 i arm64). Poniżej znajduje się krótkie omówienie poszczególnych kroków w tym łańcuchu działań:
-
+<br>
 Checkout repository:
+<br>
 Ten krok korzysta z akcji actions/checkout@v3 i służy do sklonowania repozytorium, aby uzyskać dostęp do kodu źródłowego.
+<br>
 Set up QEMU:
+<br>
 Ten krok korzysta z akcji docker/setup-qemu-action@v2 i służy do konfiguracji QEMU w środowisku, aby umożliwić budowanie obrazów dla architektury arm64 na maszynie x86_64.
+<br>
 Set up Docker Buildx:
+<br>
 Ten krok korzysta z akcji docker/setup-buildx-action@v2 i służy do konfiguracji narzędzia Docker Buildx, które umożliwia wieloplatformowe budowanie obrazów Docker.
+<br>
 Login to Docker Hub:
+<br>
 Ten krok korzysta z akcji docker/login-action@v2 i służy do zalogowania się do Docker Hub, aby umożliwić przesłanie zbudowanych obrazów.
+<br>
 Build and push Docker image (x86_64):
+<br>
 Ten krok buduje obraz Docker dla architektury x86_64 i przesyła go do Docker Hub. Parametr --platform linux/amd64 określa, że obraz jest budowany dla tej architektury.
+<br>
 Build and push Docker image (arm64):
+<br>
 Ten krok buduje obraz Docker dla architektury arm64 i przesyła go do Docker Hub. Parametr --platform linux/arm64 określa, że obraz jest budowany dla tej architektury. Dodatkowo, w sekcji env są ustawione zmienne środowiskowe DOCKER_BUILDKIT, DOCKER_CLI_EXPERIMENTAL oraz DOCKER_BUILDKIT_INLINE_CACHE, które mają wpływ na sposób budowania obrazu.
+<br>
 Ten łańcuch działań umożliwia automatyczne budowanie i przesyłanie obrazów Docker do Docker Hub dla dwóch różnych architektur.
 <img width="915" alt="Zrzut ekranu 2023-06-9 o 14 28 27" src="https://github.com/Walicce/zadanie2/assets/60614660/a7ba5dd6-8255-4394-a049-874b9ae0f719">
 
@@ -47,19 +60,33 @@ Po zbudowaniu obrazu, w ramach działań w Github Actions, obraz powinien zosta�
 
 <img width="1415" alt="Zrzut ekranu 2023-06-10 o 21 07 06" src="https://github.com/Walicce/zadanie2/assets/60614660/d20970f6-4a5f-45e5-b3f7-bc6ec7b3262f">
 <img width="1440" alt="Zrzut ekranu 2023-06-10 o 21 01 05" src="https://github.com/Walicce/zadanie2/assets/60614660/c7deda67-0335-42ed-bd65-bb66cfb90e47">
+<br>
 Checkout repository:
+<br>
 Ten krok korzysta z akcji actions/checkout@v3 i służy do sklonowania repozytorium, aby uzyskać dostęp do kodu źródłowego.
+<br>
 Set up QEMU:
+<br>
 Ten krok korzysta z akcji docker/setup-qemu-action@v2 i służy do konfiguracji QEMU w środowisku, aby umożliwić budowanie obrazów dla architektury arm64 na maszynie x86_64.
+<br>
 Set up Docker Buildx:
+<br>
 Ten krok korzysta z akcji docker/setup-buildx-action@v2 i służy do konfiguracji narzędzia Docker Buildx, które umożliwia wieloplatformowe budowanie obrazów Docker.
+<br>
 Log in to GitHub Packages:
+<br>
 Ten krok loguje się do GitHub Packages za pomocą tokena przechowywanego jako tajna wartość (secrets.GHUB_TOKEN). Używamy tego logowania, aby móc przesłać obraz Docker do repozytorium GitHub Packages.
+<br>
 Build and push Docker image:
+<br>
 Ten krok buduje obraz Docker dla architektur linux/amd64 i linux/arm64, a następnie przesyła go do repozytorium GitHub Packages (ghcr.io/walicce/walicce/zadanie2). Wykorzystywany jest identyfikator wersji (github.sha), aby utworzyć unikalne oznaczenie obrazu.
+<br>
 Create package:
+<br>
 Ten krok tworzy pakiet w GitHub Packages, wykorzystując API GitHub. Uzyskany identyfikator pakietu jest przekazywany jako wynik (package_id) do kolejnego kroku.
+<br>
 Add package to repository:
+<br>
 Ten krok dodaje stworzony pakiet do repozytorium GitHub Packages. Wykorzystywane są token uwierzytelniający (secrets.GHUB_TOKEN) i identyfikator pakietu (package_id). Pakiet jest przypisywany do repozytorium o nazwie "zadanie2".
 
 
