@@ -26,20 +26,19 @@ jobs:
         run: |
           docker buildx build --platform linux/amd64,linux/arm64 --push -t ghcr.io/walicce/walicce/zadanie2:${{ github.sha }} .
 
-      - name: Get package ID
-        id: get_package_id
+      - name: Create package
+        id: create_package
         run: |
-          response=$(curl -s -X GET \
+          response=$(curl -X POST \
             -H "Authorization: Bearer ${{ secrets.GHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/user/packages/packages?q=name:zadanie2")
-          package_id=$(echo "$response" | grep -oP '(?<="id": ")[^"]+')
+            "https://api.github.com/user/packages")
+          package_id=$(echo "$response" | jq -r '.id')
           echo "::set-output name=package_id::$package_id"
-
 
       - name: Add package to repository
         run: |
-          package_id=${{ steps.get_package_id.outputs.package_id }}
+          package_id=${{ steps.create_package.outputs.package_id }}
           curl -X PUT \
             -H "Authorization: Bearer ${{ secrets.GHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
