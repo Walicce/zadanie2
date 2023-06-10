@@ -1,4 +1,3 @@
-
 name: Push Docker Image to GitHub Packages
 
 on:
@@ -8,7 +7,6 @@ on:
 
 jobs:
   push:
-  
     runs-on: ubuntu-latest
 
     steps:
@@ -28,4 +26,8 @@ jobs:
         run: |
           docker buildx build --platform linux/amd64,linux/arm64 --push -t ghcr.io/walicce/walicce/zadanie2:${{ github.sha }} .
 
+      - name: Add package to repository
+        run: |
+          gh package repo create walicce/zadanie2
+          gh package version create walicce/zadanie2 --title "Package Version" --package <package-id>
 
