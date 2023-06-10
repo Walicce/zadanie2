@@ -44,6 +44,7 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.GHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/user/packages/packages/$package_id/repository" \
-            -d "{\"package_name\":\"my-package\"}"
+           -d "{\"package_name\":\"zadanie2\"}"
+
 
 
