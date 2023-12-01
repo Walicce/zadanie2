@@ -1,5 +1,5 @@
 # Stage 1: Build the React app
-FROM node:alpine as build-stage
+FROM node:21.2-alpine3.18 as build-stage
 WORKDIR '/app'
 COPY package.json .
 RUN npm install
@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Serve the app with a lightweight HTTP server
-FROM node:alpine as production-stage
+FROM node:21.2-alpine3.18 as production-stage
 EXPOSE 80
 
 # Update OpenSSL to the fixed version
